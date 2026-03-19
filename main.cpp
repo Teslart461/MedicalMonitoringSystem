@@ -1,13 +1,6 @@
 #include <iostream>
 #include <memory>
 
-#include "models/VitalSigns.h"
-#include "models/ElectronicHealthRecord.h"
-
-#include "diagnosis/DiagnosticSystem.h"
-
-#include "core/VitalSignsCollector.h"
-
 #include "report/EmergencyNotifier.h"
 #include "report/ReportGenerator.h"
 
@@ -18,62 +11,43 @@
 #include "proxy/HeartRateMonitorProxy.h"
 #include "proxy/OximeterProxy.h"
 
+#include "core/RemoteMonitoringSystem.h"
+
 #include <locale>
 
 int main() {
     setlocale(LC_ALL, "RUS");
 
-    // 1. Конфигурирование оборудования (Создаем базовые устройства)
-    auto hrm = std::make_shared<HeartRateMonitor>();
-    auto bpm = std::make_shared<BloodPressureMonitor>();
-    auto oximeter = std::make_shared<Oximeter>();
+    // 1. Создаем систему и зависимости
+    auto reporter = std::make_shared<ReportGenerator>();
+    auto notifier = std::make_shared<EmergencyNotifier>();
 
-    // 2. Настраиваем Proxy 
-    auto hrmProxy = std::make_shared<HeartRateMonitorProxy>(hrm);
-    auto bpmProxy = std::make_shared<BloodPressureMonitorProxy>(bpm);
-    auto oximeterProxy = std::make_shared<OximeterProxy>(oximeter);
+    // 2. Инициализация основной системы
+    RemoteMonitoringSystem monitoringSystem(reporter, notifier);
 
-    // 3. Настраиваем сборщик данных (VitalSignsCollector)
-    VitalSignsCollector collector;
-    collector.addDevice(hrmProxy);
-    collector.addDevice(bpmProxy);
-    collector.addDevice(oximeterProxy);
+    // 3. Конфигурирование оборудования (Датчики + Прокси)
+    // Оборачиваем реальные датчики в прокси-объекты
+    auto haertRateDevice = std::make_shared<HeartRateMonitor>();
+    monitoringSystem.addDevice(std::make_shared<HeartRateMonitorProxy>(haertRateDevice));
 
-    // 4. Настраиваем систему отчётности и уведомлений
-    auto emergencyNotifier = std::make_shared<EmergencyNotifier>();
-    auto reportGenerator = std::make_shared<ReportGenerator>();
+    auto bloodPressureDevice = std::make_shared<BloodPressureMonitor>();
+    monitoringSystem.addDevice(std::make_shared<BloodPressureMonitorProxy>(bloodPressureDevice));
 
-    // 5. Конфигурируем фасад диагностики
-    DiagnosticSystem diagnosticSystem(emergencyNotifier);
-    diagnosticSystem.addAnalyzer(std::make_shared<VitalSignsAnalyzer>());
-    diagnosticSystem.addAnalyzer(std::make_shared<CriticalStateAnalyzer>());
+    auto oximeterDevice = std::make_shared<Oximeter>();
+    monitoringSystem.addDevice(std::make_shared<OximeterProxy>(oximeterDevice));
 
-    // 6. Инициализируем электронную карту
-    ElectronicHealthRecord ehr;
+    // 4. Настройка алгоритмов диагностики
+    monitoringSystem.addAnalyzer(std::make_shared<VitalSignsAnalyzer>());
+    monitoringSystem.addAnalyzer(std::make_shared<CriticalStateAnalyzer>());
 
-    // --- СИМУЛЯЦИЯ РАБОТЫ --- //
-
-    // Итерации сбора данных
-    for (int i = 0; i < 2; ++i) {
-        VitalSigns currentData = collector.collectData();
-        ehr.addRecord(currentData);
-        diagnosticSystem.analyze(currentData);
+    // 5. Запуск работы системы
+    std::cout << "=== Система удаленного мониторинга запущена ===" << std::endl;
+    for (int i = 0; i < 3; ++i) {
+        monitoringSystem.runCycle();
     }
 
-    reportGenerator->generateReport(ehr);
-
-    // 2. Посмотреть только 3-ю по счету запись (индекс 2)
-    std::cout << "\nАнализ конкретной итерации:";
-    reportGenerator->printSpecificRecord(ehr, 2);
-
-    // 3. Поиск записей с критической сатурацией (фильтрация)
-    std::cout << "\nПоиск записей с низкой сатурацией (< 92%):\n";
-    for (size_t i = 0; i < ehr.getRecordsCount(); ++i) {
-        VitalSigns v = ehr.getRecordByIndex(i);
-        if (v.oxygenSaturation < 92) {
-            std::cout << "Внимание! В итерации #" << i + 1 << " сатурация была: " << v.oxygenSaturation << "%\n";
-        }
-    }
+    // 6. Получение финального отчета
+    monitoringSystem.showFinalReport();
 
     return 0;
 }

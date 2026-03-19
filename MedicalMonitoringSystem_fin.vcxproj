@@ -123,6 +123,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="core\RemoteMonitoringSystem.cpp" />
     <ClCompile Include="core\VitalSignsCollector.cpp" />
     <ClCompile Include="devices\BloodPressureMonitor.cpp" />
     <ClCompile Include="devices\HeartRateMonitor.cpp" />
@@ -139,6 +140,7 @@
     <ClCompile Include="report\ReportGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="core\RemoteMonitoringSystem.h" />
     <ClInclude Include="core\VitalSignsCollector.h" />
     <ClInclude Include="devices\BloodPressureMonitor.h" />
     <ClInclude Include="devices\HeartRateMonitor.h" />
