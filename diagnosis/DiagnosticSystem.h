@@ -7,10 +7,11 @@
 
 class DiagnosticSystem : public IDiagnosticSystem {
 private:
-    std::vector<std::shared_ptr<IDiagnosis>> analyzers;
-    std::shared_ptr<IReportSystem> notifier;
+    std::vector<IDiagnosis*> analyzers;
+    IReportSystem* notifier;
 public:
-    DiagnosticSystem(std::shared_ptr<IReportSystem> emergencyNotifier);
-    void addAnalyzer(std::shared_ptr<IDiagnosis> analyzer);
+    DiagnosticSystem(IReportSystem* notif);
+    ~DiagnosticSystem();
+    void addAnalyzer(IDiagnosis* analyzer);
     void analyze(const VitalSigns& data) override;
 };

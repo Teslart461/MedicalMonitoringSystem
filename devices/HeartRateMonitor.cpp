@@ -3,7 +3,13 @@
 #include <iostream>
 #include <random>
 
+HeartRateMonitor::HeartRateMonitor(int initialBattery) : batteryLevel(initialBattery) {
+}
+
 VitalSigns HeartRateMonitor::getData() {
+    // Имитация расхода энергии на измерение
+    batteryLevel -= 5;
+
     std::cout << "[HeartRateMonitor] Считывание пульса...\n";
     VitalSigns vs;
 
@@ -13,4 +19,8 @@ VitalSigns HeartRateMonitor::getData() {
 
     vs.heartRate = dist(gen);
     return vs;
+}
+
+int HeartRateMonitor::getBatteryLevel() const {
+    return batteryLevel;
 }

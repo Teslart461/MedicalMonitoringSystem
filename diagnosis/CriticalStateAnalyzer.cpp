@@ -8,3 +8,7 @@ bool CriticalStateAnalyzer::check(const VitalSigns& data) {
     }
     return false;
 }
+
+bool CriticalStateAnalyzer::isCritical() const {
+    return true;
+}

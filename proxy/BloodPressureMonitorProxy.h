@@ -5,11 +5,12 @@
 
 class BloodPressureMonitorProxy : public IMedicalDevice {
 private:
-    std::shared_ptr<IMedicalDevice> realDevice;
+    IMedicalDevice* realDevice; //Убрал shared_ptr
     VitalSigns cache;
-    int batteryLevel;
 
 public:
-    explicit BloodPressureMonitorProxy(std::shared_ptr<IMedicalDevice> device, int battery = 100);
+    BloodPressureMonitorProxy(IMedicalDevice* device);
+    ~BloodPressureMonitorProxy() override;
+    int getBatteryLevel() const override;
     VitalSigns getData() override;
 };

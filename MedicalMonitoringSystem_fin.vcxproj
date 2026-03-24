@@ -131,6 +131,7 @@
     <ClCompile Include="diagnosis\CriticalStateAnalyzer.cpp" />
     <ClCompile Include="diagnosis\DiagnosticSystem.cpp" />
     <ClCompile Include="diagnosis\VitalSignsAnalyzer.cpp" />
+    <ClCompile Include="interfaces\IDiagnosis.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="models\ElectronicHealthRecord.cpp" />
     <ClCompile Include="proxy\BloodPressureMonitorProxy.cpp" />

@@ -5,9 +5,10 @@
 
 class VitalSignsCollector {
 private:
-    std::vector<std::shared_ptr<IMedicalDevice>> devices;
+    std::vector<IMedicalDevice*> devices; // Массив указателей
 
 public:
-    void addDevice(std::shared_ptr<IMedicalDevice> device);
+    ~VitalSignsCollector();
+    void addDevice(IMedicalDevice* device);
     VitalSigns collectData();
 };

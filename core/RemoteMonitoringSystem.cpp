@@ -1,20 +1,23 @@
 #include "RemoteMonitoringSystem.h"
 #include <iostream>
 
-RemoteMonitoringSystem::RemoteMonitoringSystem(
-    std::shared_ptr<IReportSystem> reporter,
-    std::shared_ptr<IReportSystem> notifier
-) : reportGenerator(reporter) {
-    // Фасад диагностики создается внутри
-    diagnosticSystem = std::make_unique<DiagnosticSystem>(notifier);
+RemoteMonitoringSystem::RemoteMonitoringSystem(IReportSystem* reporter, IReportSystem* notif)
+    : reportGenerator(reporter), notifier(notif) {
+    diagnosticSystem = new DiagnosticSystem(notifier);
 }
 
-void RemoteMonitoringSystem::addDevice(std::shared_ptr<IMedicalDevice> device) {
-    collector.addDevice(std::move(device));
+RemoteMonitoringSystem::~RemoteMonitoringSystem() {
+    delete diagnosticSystem;
+    delete reportGenerator;
+    delete notifier;
 }
 
-void RemoteMonitoringSystem::addAnalyzer(std::shared_ptr<IDiagnosis> analyzer) {
-    diagnosticSystem->addAnalyzer(std::move(analyzer));
+void RemoteMonitoringSystem::addDevice(IMedicalDevice* device) {
+    collector.addDevice(device);
+}
+
+void RemoteMonitoringSystem::addAnalyzer(IDiagnosis* analyzer) {
+    diagnosticSystem->addAnalyzer(analyzer);
 }
 
 void RemoteMonitoringSystem::runCycle() {
@@ -34,8 +37,4 @@ void RemoteMonitoringSystem::showFinalReport() {
     if (reportGenerator) {
         reportGenerator->generateReport(ehr);
     }
-}
-
-const ElectronicHealthRecord& RemoteMonitoringSystem::getEHR() const {
-    return ehr;
 }

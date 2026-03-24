@@ -1,11 +1,17 @@
 #include "VitalSignsCollector.h"
 
-void VitalSignsCollector::addDevice(std::shared_ptr<IMedicalDevice> device) {
-    devices.push_back(std::move(device));
+VitalSignsCollector::~VitalSignsCollector() {
+    for (auto device : devices) {
+        delete device; //  оллектор удал€ет все устройства
+    }
+}
+
+void VitalSignsCollector::addDevice(IMedicalDevice* device) {
+    devices.push_back(device);
 }
 
 VitalSigns VitalSignsCollector::collectData() {
-    VitalSigns aggregatedData;
+    VitalSigns aggregatedData{};
     for (const auto& device : devices) {
         VitalSigns current = device->getData();
         // јгрегируем данные (записываем только те, что не равны 0)

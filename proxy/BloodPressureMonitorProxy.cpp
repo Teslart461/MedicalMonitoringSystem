@@ -1,19 +1,28 @@
 #include "BloodPressureMonitorProxy.h"
 #include <iostream>
 
-BloodPressureMonitorProxy::BloodPressureMonitorProxy(std::shared_ptr<IMedicalDevice> device, int battery)
-    : realDevice(std::move(device)), batteryLevel(battery) {
+BloodPressureMonitorProxy::BloodPressureMonitorProxy(IMedicalDevice* device) : realDevice(device) {
+
+}
+
+BloodPressureMonitorProxy::~BloodPressureMonitorProxy() {
+	delete realDevice;
+}
+
+int BloodPressureMonitorProxy::getBatteryLevel() const {
+	return realDevice->getBatteryLevel();
 }
 
 VitalSigns BloodPressureMonitorProxy::getData() {
-    std::cout << "[Proxy] Запрос к тонометру. Заряд: " << batteryLevel << "%\n";
-    if (batteryLevel < 10) {
-        std::cout << "[Proxy Warning] Критически низкий заряд! Возвращаем кэшированные данные.\n";
+    // Проверяем заряд РЕАЛЬНОГО устройства
+    if (realDevice->getBatteryLevel() > 10) {
+        // Если энергии хватает, делаем измерение и обновляем кэш
+        cache = realDevice->getData();
         return cache;
     }
-
-    // Логирование и кэширование
-    cache = realDevice->getData();
-    batteryLevel -= 10; // Имитация разряда
-    return cache;
+    else {
+        // Если прибор сел, спасаем ситуацию — отдаем старые данные
+        std::cout << "[Proxy] Внимание! Низкий заряд датчика. Возвращаю кэшированные данные.\n";
+        return cache;
+    }
 }

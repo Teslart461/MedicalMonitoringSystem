@@ -5,11 +5,12 @@
 
 class OximeterProxy : public IMedicalDevice {
 private:
-    std::shared_ptr<IMedicalDevice> realDevice;
+    IMedicalDevice* realDevice; //Убрал shared_ptr
     VitalSigns cache;
-    int batteryLevel;
 
 public:
-    explicit OximeterProxy(std::shared_ptr<IMedicalDevice> device, int battery = 100);
+    OximeterProxy(IMedicalDevice* device);
+    ~OximeterProxy() override;
+    int getBatteryLevel() const override;
     VitalSigns getData() override;
 };

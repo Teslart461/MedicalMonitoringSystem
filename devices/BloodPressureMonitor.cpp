@@ -3,7 +3,14 @@
 #include <iostream>
 #include <random>
 
+BloodPressureMonitor::BloodPressureMonitor(int initialBattery) : batteryLevel(initialBattery) {
+
+}
+
 VitalSigns BloodPressureMonitor::getData() {
+    // Имитация расхода энергии на измерение
+    batteryLevel -= 10;
+
     std::cout << "[BloodPressureMonitor] Считывание давления...\n";
     VitalSigns vs;
 
@@ -15,4 +22,8 @@ VitalSigns BloodPressureMonitor::getData() {
     vs.systolicPressure = sys(gen);
     vs.diastolicPressure = dia(gen);
     return vs;
+}
+
+int BloodPressureMonitor::getBatteryLevel() const {
+    return batteryLevel;
 }

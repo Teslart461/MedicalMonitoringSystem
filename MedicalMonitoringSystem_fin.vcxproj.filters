@@ -60,6 +60,9 @@
     <ClCompile Include="core\RemoteMonitoringSystem.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="interfaces\IDiagnosis.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="report\ReportGenerator.h">

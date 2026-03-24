@@ -3,7 +3,14 @@
 #include <cstdlib>
 #include <random>
 
+Oximeter::Oximeter(int initialBattery) : batteryLevel(initialBattery) {
+
+}
+
 VitalSigns Oximeter::getData() {
+    // Имитация расхода энергии на измерение
+    batteryLevel -= 3;
+
     std::cout << "[Oximeter] Считывание сатурации...\n";
     VitalSigns vs;
 
@@ -13,4 +20,8 @@ VitalSigns Oximeter::getData() {
 
     vs.oxygenSaturation = dist(gen);
     return vs;
+}
+
+int Oximeter::getBatteryLevel() const {
+    return batteryLevel;
 }

@@ -1,5 +1,4 @@
 #include <iostream>
-#include <memory>
 
 #include "report/EmergencyNotifier.h"
 #include "report/ReportGenerator.h"
@@ -18,27 +17,26 @@
 int main() {
     setlocale(LC_ALL, "RUS");
 
-    // 1. Создаем систему и зависимости
-    auto reporter = std::make_shared<ReportGenerator>();
-    auto notifier = std::make_shared<EmergencyNotifier>();
+    // 1. Создаем системы вывода
+    IReportSystem* reporter = new ReportGenerator();
+    IReportSystem* notifier = new EmergencyNotifier();
 
-    // 2. Инициализация основной системы
+    // 2. Инициализируем фасад основной системы
     RemoteMonitoringSystem monitoringSystem(reporter, notifier);
 
-    // 3. Конфигурирование оборудования (Датчики + Прокси)
-    // Оборачиваем реальные датчики в прокси-объекты
-    auto haertRateDevice = std::make_shared<HeartRateMonitor>();
-    monitoringSystem.addDevice(std::make_shared<HeartRateMonitorProxy>(haertRateDevice));
+    // 3. Конфигурируем оборудование через new
+    IMedicalDevice* hrDevice = new HeartRateMonitor(20);
+    monitoringSystem.addDevice(new HeartRateMonitorProxy(hrDevice));
 
-    auto bloodPressureDevice = std::make_shared<BloodPressureMonitor>();
-    monitoringSystem.addDevice(std::make_shared<BloodPressureMonitorProxy>(bloodPressureDevice));
+    IMedicalDevice* bpDevice = new BloodPressureMonitor(50);
+    monitoringSystem.addDevice(new BloodPressureMonitorProxy(bpDevice));
 
-    auto oximeterDevice = std::make_shared<Oximeter>();
-    monitoringSystem.addDevice(std::make_shared<OximeterProxy>(oximeterDevice));
+    IMedicalDevice* oxDevice = new Oximeter(30);
+    monitoringSystem.addDevice(new OximeterProxy(oxDevice));
 
-    // 4. Настройка алгоритмов диагностики
-    monitoringSystem.addAnalyzer(std::make_shared<VitalSignsAnalyzer>());
-    monitoringSystem.addAnalyzer(std::make_shared<CriticalStateAnalyzer>());
+    // 4. Настраиваем алгоритмы через new
+    monitoringSystem.addAnalyzer(new VitalSignsAnalyzer());
+    monitoringSystem.addAnalyzer(new CriticalStateAnalyzer());
 
     // 5. Запуск работы системы
     std::cout << "=== Система удаленного мониторинга запущена ===" << std::endl;

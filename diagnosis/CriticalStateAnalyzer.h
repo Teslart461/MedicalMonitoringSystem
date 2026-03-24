@@ -4,4 +4,5 @@
 class CriticalStateAnalyzer : public IDiagnosis {
 public:
     bool check(const VitalSigns& data) override;
+    bool isCritical() const override;
 };
