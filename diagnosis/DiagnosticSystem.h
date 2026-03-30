@@ -3,7 +3,6 @@
 #include "../interfaces/IDiagnosis.h"
 #include "../interfaces/IReportSystem.h"
 #include <vector>
-#include <memory>
 
 class DiagnosticSystem : public IDiagnosticSystem {
 private:

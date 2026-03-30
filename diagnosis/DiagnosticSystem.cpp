@@ -1,5 +1,4 @@
 #include "DiagnosticSystem.h"
-#include "CriticalStateAnalyzer.h"
 #include <iostream>
 
 DiagnosticSystem::DiagnosticSystem(IReportSystem* notif) : notifier(notif) {

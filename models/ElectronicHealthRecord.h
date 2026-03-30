@@ -1,7 +1,6 @@
 #pragma once
 #include "../interfaces/IPatientRecord.h"
 #include <vector>
-#include <memory>
 
 class ElectronicHealthRecord : public IPatientRecord {
 private:

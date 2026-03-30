@@ -28,10 +28,10 @@ int main() {
     IMedicalDevice* hrDevice = new HeartRateMonitor(20);
     monitoringSystem.addDevice(new HeartRateMonitorProxy(hrDevice));
 
-    IMedicalDevice* bpDevice = new BloodPressureMonitor(50);
+    IMedicalDevice* bpDevice = new BloodPressureMonitor(15);
     monitoringSystem.addDevice(new BloodPressureMonitorProxy(bpDevice));
 
-    IMedicalDevice* oxDevice = new Oximeter(30);
+    IMedicalDevice* oxDevice = new Oximeter(20);
     monitoringSystem.addDevice(new OximeterProxy(oxDevice));
 
     // 4. Настраиваем алгоритмы через new

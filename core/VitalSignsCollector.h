@@ -1,7 +1,6 @@
 #pragma once
 #include "../interfaces/IMedicalDevice.h"
 #include <vector>
-#include <memory>
 
 class VitalSignsCollector {
 private:

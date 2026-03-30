@@ -1,7 +1,6 @@
 #pragma once
 #include "../interfaces/IMedicalDevice.h"
 #include "../devices/BloodPressureMonitor.h"
-#include <memory>
 
 class BloodPressureMonitorProxy : public IMedicalDevice {
 private:
