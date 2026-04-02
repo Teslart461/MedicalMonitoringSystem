@@ -123,6 +123,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="adapters\BloodPressureAdapter.cpp" />
+    <ClCompile Include="adapters\HeartRateAdapter.cpp" />
+    <ClCompile Include="adapters\LegacyBloodPressureDevice.cpp" />
+    <ClCompile Include="adapters\LegacyHeartRateDevice.cpp" />
+    <ClCompile Include="adapters\LegacyOximeter.cpp" />
+    <ClCompile Include="adapters\OximeterAdapter.cpp" />
     <ClCompile Include="core\RemoteMonitoringSystem.cpp" />
     <ClCompile Include="core\VitalSignsCollector.cpp" />
     <ClCompile Include="devices\BloodPressureMonitor.cpp" />
@@ -141,6 +147,12 @@
     <ClCompile Include="report\ReportGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="adapters\BloodPressureAdapter.h" />
+    <ClInclude Include="adapters\HeartRateAdapter.h" />
+    <ClInclude Include="adapters\LegacyBloodPressureDevice.h" />
+    <ClInclude Include="adapters\LegacyHeartRateDevice.h" />
+    <ClInclude Include="adapters\LegacyOximeter.h" />
+    <ClInclude Include="adapters\OximeterAdapter.h" />
     <ClInclude Include="core\RemoteMonitoringSystem.h" />
     <ClInclude Include="core\VitalSignsCollector.h" />
     <ClInclude Include="devices\BloodPressureMonitor.h" />

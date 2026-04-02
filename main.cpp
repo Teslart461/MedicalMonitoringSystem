@@ -12,6 +12,10 @@
 
 #include "core/RemoteMonitoringSystem.h"
 
+#include "adapters/HeartRateAdapter.h"
+#include "adapters/BloodPressureAdapter.h"
+#include "adapters/OximeterAdapter.h"
+
 #include <locale>
 
 int main() {
@@ -25,14 +29,30 @@ int main() {
     RemoteMonitoringSystem monitoringSystem(reporter, notifier);
 
     // 3. Конфигурируем оборудование через new
-    IMedicalDevice* hrDevice = new HeartRateMonitor(20);
+    /*IMedicalDevice* hrDevice = new HeartRateMonitor(20);
     monitoringSystem.addDevice(new HeartRateMonitorProxy(hrDevice));
 
     IMedicalDevice* bpDevice = new BloodPressureMonitor(15);
     monitoringSystem.addDevice(new BloodPressureMonitorProxy(bpDevice));
 
     IMedicalDevice* oxDevice = new Oximeter(20);
-    monitoringSystem.addDevice(new OximeterProxy(oxDevice));
+    monitoringSystem.addDevice(new OximeterProxy(oxDevice));*/
+
+    // Адаптеры
+    LegacyHeartRateDevice* legacyHR = new LegacyHeartRateDevice();
+    IMedicalDevice* hrAdapter = new HeartRateAdapter(legacyHR);
+
+    monitoringSystem.addDevice(new HeartRateMonitorProxy(hrAdapter));
+
+    LegacyBloodPressureDevice* legacyBP = new LegacyBloodPressureDevice();
+    IMedicalDevice* bpAdapter = new BloodPressureAdapter(legacyBP);
+
+    monitoringSystem.addDevice(new BloodPressureMonitorProxy(bpAdapter));
+
+    LegacyOximeter* legacyOx = new LegacyOximeter();
+    IMedicalDevice* oxAdapter = new OximeterAdapter(legacyOx);
+
+    monitoringSystem.addDevice(new OximeterProxy(oxAdapter));
 
     // 4. Настраиваем алгоритмы через new
     monitoringSystem.addAnalyzer(new VitalSignsAnalyzer());
