@@ -17,6 +17,8 @@
 #include "adapters/OximeterAdapter.h"
 
 #include "decorators/NoiseFilteringDecorator.h"
+#include "decorators/RangeValidationDecorator.h"
+#include "decorators/TrendAnalysisDecorator.h"
 
 #include <locale>
 
@@ -59,16 +61,24 @@ int main() {
     // 4. Настраиваем алгоритмы через new
     //monitoringSystem.addAnalyzer(new VitalSignsAnalyzer());
     //monitoringSystem.addAnalyzer(new CriticalStateAnalyzer());
-    IDiagnosis* analyzer =
+    IDiagnosis* vitalAnalyzer =
         new NoiseFilteringDecorator(
+            new TrendAnalysisDecorator(
                 new VitalSignsAnalyzer()
+            )
         );
 
-    monitoringSystem.addAnalyzer(analyzer);
+    IDiagnosis* criticalAnalyzer =
+        new TrendAnalysisDecorator(
+            new CriticalStateAnalyzer()
+        );
+
+    monitoringSystem.addAnalyzer(vitalAnalyzer);
+    monitoringSystem.addAnalyzer(criticalAnalyzer);
 
     // 5. Запуск работы системы
     std::cout << "=== Система удаленного мониторинга запущена ===" << std::endl;
-    for (int i = 0; i < 2; ++i) {
+    for (int i = 0; i < 3; ++i) {
         monitoringSystem.runCycle();
     }
 

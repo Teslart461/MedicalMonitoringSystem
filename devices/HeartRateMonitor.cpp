@@ -15,7 +15,7 @@ VitalSigns HeartRateMonitor::getData() {
 
     static std::random_device rd;      // источник энтропии
     static std::mt19937 gen(rd());     // генератор
-    static std::uniform_int_distribution<> dist(50, 160);
+    static std::uniform_int_distribution<> dist(10, 250);
 
     vs.heartRate = dist(gen);
     return vs;

@@ -15,3 +15,7 @@ bool DiagnosisDecorator::check(const VitalSigns& data) {
 VitalSigns DiagnosisDecorator::process(const VitalSigns& data) {
 	return wrapped->process(data);
 }
+
+bool DiagnosisDecorator::isCritical() const {
+	return wrapped->isCritical();
+}

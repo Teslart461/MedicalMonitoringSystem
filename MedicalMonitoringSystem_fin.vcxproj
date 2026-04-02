@@ -133,6 +133,8 @@
     <ClCompile Include="core\VitalSignsCollector.cpp" />
     <ClCompile Include="decorators\DiagnosisDecorator.cpp" />
     <ClCompile Include="decorators\NoiseFilteringDecorator.cpp" />
+    <ClCompile Include="decorators\RangeValidationDecorator.cpp" />
+    <ClCompile Include="decorators\TrendAnalysisDecorator.cpp" />
     <ClCompile Include="devices\BloodPressureMonitor.cpp" />
     <ClCompile Include="devices\HeartRateMonitor.cpp" />
     <ClCompile Include="devices\Oximeter.cpp" />
@@ -159,6 +161,8 @@
     <ClInclude Include="core\VitalSignsCollector.h" />
     <ClInclude Include="decorators\DiagnosisDecorator.h" />
     <ClInclude Include="decorators\NoiseFilteringDecorator.h" />
+    <ClInclude Include="decorators\RangeValidationDecorator.h" />
+    <ClInclude Include="decorators\TrendAnalysisDecorator.h" />
     <ClInclude Include="devices\BloodPressureMonitor.h" />
     <ClInclude Include="devices\HeartRateMonitor.h" />
     <ClInclude Include="devices\Oximeter.h" />

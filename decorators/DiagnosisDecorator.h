@@ -11,4 +11,6 @@ public:
 
     bool check(const VitalSigns& data) override;
     VitalSigns process(const VitalSigns& data);
+
+    bool isCritical() const override;
 };

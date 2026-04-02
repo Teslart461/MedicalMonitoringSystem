@@ -16,7 +16,7 @@ VitalSigns Oximeter::getData() {
 
     static std::random_device rd;      // источник энтропии
     static std::mt19937 gen(rd());     // генератор
-    static std::uniform_int_distribution<> dist(85, 99);
+    static std::uniform_int_distribution<> dist(60, 110);
 
     vs.oxygenSaturation = dist(gen);
     return vs;
