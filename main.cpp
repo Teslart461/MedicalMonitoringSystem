@@ -16,6 +16,8 @@
 #include "adapters/BloodPressureAdapter.h"
 #include "adapters/OximeterAdapter.h"
 
+#include "decorators/NoiseFilteringDecorator.h"
+
 #include <locale>
 
 int main() {
@@ -55,12 +57,18 @@ int main() {
     monitoringSystem.addDevice(new OximeterProxy(oxAdapter));
 
     // 4. Настраиваем алгоритмы через new
-    monitoringSystem.addAnalyzer(new VitalSignsAnalyzer());
-    monitoringSystem.addAnalyzer(new CriticalStateAnalyzer());
+    //monitoringSystem.addAnalyzer(new VitalSignsAnalyzer());
+    //monitoringSystem.addAnalyzer(new CriticalStateAnalyzer());
+    IDiagnosis* analyzer =
+        new NoiseFilteringDecorator(
+                new VitalSignsAnalyzer()
+        );
+
+    monitoringSystem.addAnalyzer(analyzer);
 
     // 5. Запуск работы системы
     std::cout << "=== Система удаленного мониторинга запущена ===" << std::endl;
-    for (int i = 0; i < 3; ++i) {
+    for (int i = 0; i < 2; ++i) {
         monitoringSystem.runCycle();
     }
 

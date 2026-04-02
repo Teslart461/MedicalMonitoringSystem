@@ -15,10 +15,14 @@ void DiagnosticSystem::addAnalyzer(IDiagnosis* analyzer) {
     analyzers.push_back(analyzer);
 }
 
-void DiagnosticSystem::analyze(const VitalSigns& data) {
+VitalSigns DiagnosticSystem::analyze(const VitalSigns& data) {
     std::cout << "\n\n--- Запуск системы диагностики ---\n\n";
-    for (const auto& analyzer : analyzers) {
-        bool result = analyzer->check(data);
+    VitalSigns current = data;
+
+    for (auto analyzer : analyzers) {
+        current = analyzer->process(current);
+
+        bool result = analyzer->check(current);
 
         // Если это CriticalStateAnalyzer и он вернул true
         if (analyzer->isCritical() && result && notifier) {
@@ -26,4 +30,5 @@ void DiagnosticSystem::analyze(const VitalSigns& data) {
         }
     }
     std::cout << "----------------------------------\n\n\n";
+    return current;
 }

@@ -12,5 +12,5 @@ public:
     DiagnosticSystem(IReportSystem* notif);
     ~DiagnosticSystem();
     void addAnalyzer(IDiagnosis* analyzer);
-    void analyze(const VitalSigns& data) override;
+    VitalSigns analyze(const VitalSigns& data) override;
 };

@@ -6,4 +6,5 @@ public:
     virtual ~IDiagnosis() = default;
     virtual bool check(const VitalSigns& data) = 0;
     virtual bool isCritical() const;
+    virtual VitalSigns process(const VitalSigns& data);
 };

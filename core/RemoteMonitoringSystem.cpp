@@ -26,11 +26,11 @@ void RemoteMonitoringSystem::runCycle() {
     // 1. Собираем данные со всех устройств (через прокси)
     VitalSigns data = collector.collectData();
 
-    // 2. Сохраняем в электронную медицинскую карту
-    ehr.addRecord(data);
+    // 2. Передаем данные в систему диагностики для анализа
+    VitalSigns processed = diagnosticSystem->analyze(data);
 
-    // 3. Передаем данные в систему диагностики для анализа
-    diagnosticSystem->analyze(data);
+    // 3. Сохраняем в электронную медицинскую карту
+    ehr.addRecord(processed);
 }
 
 void RemoteMonitoringSystem::showFinalReport() {

@@ -4,5 +4,5 @@
 class IDiagnosticSystem {
 public:
     virtual ~IDiagnosticSystem() = default;
-    virtual void analyze(const VitalSigns& data) = 0;
+    virtual VitalSigns analyze(const VitalSigns& data) = 0;
 };
